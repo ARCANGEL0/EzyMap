@@ -1,6 +1,4 @@
 #!/usr/bin/env bash
-#
-# Interactive Nmap menu with toggles, value‑sets, and NSE support.
 # Coded by:
 #     /\                                  | |      
 #    /  \   _ __ ___ __ _ _ __   __ _  ___| | ___  
@@ -10,36 +8,31 @@
 #                                __/ |             
 #                               |___/         
 
-
-# Requires Bash 4+
 if ((BASH_VERSINFO[0] < 4)); then
   echo "Bash 4+ is required." >&2
   exit 1
 fi
 
-### --- Global State ---
-declare -A FLAGS           # boolean flags
-declare -a SCAN_TYPES      # selected scan types (with descriptions)
-declare -A VALUES          # options with values (ports,timing,output)
-declare -a NSE_CATEGORIES  # selected NSE categories
-declare -a NSE_SCRIPTS     # selected NSE scripts
-declare -A NSE_ARGS        # script args
+declare -A FLAGS
+declare -a SCAN_TYPES
+declare -A VALUES
+declare -a NSE_CATEGORIES
+declare -a NSE_SCRIPTS
+declare -A NSE_ARGS
 TARGETS=""
+TOR_PROXY=false
 
-# defaults
 FLAGS=( [n]=false [6]=false [r]=false [reason]=false )
 VALUES=( [ports]="1-1000" [timing]="-T3" [output_format]="" )
 ALL_SCAN_TYPES=("-sS SYN Scan" "-sT TCP Connect" "-sU UDP Scan" "-sV Version Detection" "-O OS Detection" "-sn Ping Scan" "--scanflags Custom Flags")
 ALL_NSE_CATEGORIES=(auth broadcast brute default discovery dos exploit external fuzzer intrusive malware safe version vuln)
 COMMON_NSE_SCRIPTS=( $(find /usr/share/nmap/scripts -type f -name "*.nse" -exec basename {} .nse \; | sort) )
 
-### --- Helpers ---
 pause() { read -rp "Press [Enter] to continue..."; }
-array_contains() { local val; for val in "${!2}"; do [[ "$val" == "$1" ]] && return 0; done; return 1; }
 join_by_comma() { local IFS=','; echo "$*"; }
 
 set_targets() {
-stty sane
+  stty sane
   read -rp "Enter target(s) (IP/CIDR/hostnames): " TARGETS
 }
 
@@ -61,7 +54,7 @@ scan_type_menu() {
 
 ports_menu() {
   echo "Current ports: ${VALUES[ports]}"
-stty sane
+  stty sane
   read -rp "Enter ports/range (e.g. 80,443 or 1-65535 or U:53,T:1-100): " p
   [[ -n "$p" ]] && VALUES[ports]="$p"
   pause
@@ -106,17 +99,16 @@ toggle_flags() {
 nse_menu() {
   while true; do
     clear
-    
-          figlet -f ~/.local/share/fonts/Doom.flf "NSE Scripts" -w 500
-      echo "Coded by: @h.arcangelo"
-      echo "================================"
+    figlet -f ~/.local/share/fonts/Doom.flf "NSE Scripts" -w 500
+    echo "Coded by: @h.arcangelo"
+    echo "================================"
     echo "1) Add category"
     echo "2) Add individual script"
     echo "3) Remove"
     echo "4) Script arguments"
     echo "5) View selected"
     echo "0) Back"
-stty sane
+    stty sane
     read -rp "Choice: " c
     case $c in
       1)
@@ -147,7 +139,7 @@ stty sane
           break
         done ;;
       4)
-       stty sane 
+        stty sane 
         read -rp "Arg (name=value): " pair
         IFS='=' read -r k v <<< "$pair"
         [[ -n "$k" && -n "$v" ]] && NSE_ARGS[$k]="$v"
@@ -182,13 +174,13 @@ output_menu() {
 }
 
 build_and_run() {
-  cmd=(nmap)
+  cmd=()
+  $TOR_PROXY && cmd+=(torsocks)
+  cmd+=(nmap)
   for s in "${SCAN_TYPES[@]}"; do cmd+=("${s%% *}"); done
   [[ -n ${VALUES[ports]} ]] && cmd+=("-p" "${VALUES[ports]}")
   [[ -n ${VALUES[timing]} ]] && cmd+=("${VALUES[timing]}")
   for f in "${!FLAGS[@]}"; do [[ ${FLAGS[$f]} == true ]] && cmd+=("-$f"); done
-
-  # NSE
   local scripts_combined=()
   [[ ${#NSE_CATEGORIES[@]} -gt 0 ]] && scripts_combined+=("${NSE_CATEGORIES[@]}")
   [[ ${#NSE_SCRIPTS[@]} -gt 0 ]] && scripts_combined+=("${NSE_SCRIPTS[@]}")
@@ -200,24 +192,20 @@ build_and_run() {
     for k in "${!NSE_ARGS[@]}"; do args+=("$k=${NSE_ARGS[$k]}"); done
     cmd+=("--script-args=$(join_by_comma ${args[@]})")
   fi
-
   [[ -n ${VALUES[output_format]} ]] && cmd+=(${VALUES[output_format]})
   cmd+=("$TARGETS")
-
   echo -e "\n=== COMMAND ===\n${cmd[*]}\n================"
- stty sane 
+  stty sane 
   read -rp "Run this command? [y/N]: " yn
   [[ $yn =~ ^[Yy]$ ]] && eval "${cmd[*]}"
   pause
 }
 
-### --- Menus ---
 show_main_menu() {
   clear
-  
-    figlet -f ~/.local/share/fonts/Doom.flf "EzyMap Menu" -w 500
-   echo "Coded by: @h.arcangelo"
-   echo "================================"
+  figlet -f ~/.local/share/fonts/Doom.flf "EzyMap Menu" -w 500
+  echo "Coded by: @ARCANGEL0"
+  echo "================================"
   echo "Targets:    ${TARGETS:-<not set>}"
   echo -n "Scan:       "; if ((${#SCAN_TYPES[@]})); then
     for s in "${SCAN_TYPES[@]}"; do printf '%s ' "${s%% *}"; done; echo
@@ -229,6 +217,7 @@ show_main_menu() {
   echo -n "Flags:      "; for f in "${!FLAGS[@]}"; do [[ ${FLAGS[$f]} == true ]] && printf -- "-%s " "$f"; done; echo
   echo "NSE cat:    ${#NSE_CATEGORIES[@]}  scripts: ${#NSE_SCRIPTS[@]}"
   echo -n "Output:     "; [[ -n ${VALUES[output_format]} ]] && echo "${VALUES[output_format]}" || echo "<plain>"
+  echo "TOR Proxy:  $([[ $TOR_PROXY == true ]] && echo ON || echo OFF)"
   echo "--------------------------------"
   echo "1) Set Targets"
   echo "2) Scan Types"
@@ -238,20 +227,33 @@ show_main_menu() {
   echo "6) Toggle Flags"
   echo "7) NSE Scripting"
   echo "8) Output Options"
-  echo "9) Review & Run"
+  if [[ $TOR_PROXY == true ]]; then
+    echo "9) Unset TOR Proxy"
+  else
+    echo "9) Set TOR Proxy"
+  fi
+  echo "R) Review & Run"
   echo "0) Exit"
   echo "================================"
 }
 
-# Main loop
 while true; do
   show_main_menu
-stty sane 
+  stty sane 
   read -rp "Choice: " c
+  c="${c^^}"
   case $c in
-    1) set_targets ;; 2) scan_type_menu ;; 3) ports_menu ;; 4) timing_menu ;;
-    5) host_discovery_menu ;; 6) toggle_flags ;; 7) nse_menu ;;
-    8) output_menu ;; 9) build_and_run ;; 0) clear; exit 0;;
-    *) echo "Invalid."; pause;;
+    1) set_targets ;;
+    2) scan_type_menu ;;
+    3) ports_menu ;;
+    4) timing_menu ;;
+    5) host_discovery_menu ;;
+    6) toggle_flags ;;
+    7) nse_menu ;;
+    8) output_menu ;;
+    9) TOR_PROXY=$([[ $TOR_PROXY == true ]] && echo false || echo true) ;;
+    R) build_and_run ;;
+    0) clear; exit 0 ;;
+    *) echo "Invalid."; pause ;;
   esac
 done

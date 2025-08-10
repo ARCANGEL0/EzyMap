@@ -10,6 +10,9 @@ sudo apt-get install -y curl > /dev/null 2>&1
 echo "Installing nmap..."
 sudo apt-get install -y nmap > /dev/null 2>&1
 
+echo "Installing torsocks..."
+sudo apt-get install -y torsocks > /dev/null 2>&1
+
 mkdir -p ~/.local/share/fonts
 [ ! -f ~/.local/share/fonts/starwars.flf ] && curl -o ~/.local/share/fonts/starwars.flf https://raw.githubusercontent.com/xero/figlet-fonts/master/starwars.flf
 [ ! -f ~/.local/share/fonts/Doom.flf ] && curl -o ~/.local/share/fonts/Doom.flf https://raw.githubusercontent.com/xero/figlet-fonts/master/Doom.flf
