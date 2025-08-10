@@ -8,6 +8,12 @@
 #                                __/ |             
 #                               |___/         
 
+if [ "$EUID" -ne 0 ]; then
+  echo "This command can only be run as root."
+  exit 1
+fi
+
+
 if ((BASH_VERSINFO[0] < 4)); then
   echo "Bash 4+ is required." >&2
   exit 1
