@@ -31,6 +31,7 @@ echo ""
 figlet -f ~/.local/share/fonts/starwars.flf "EzyMap"
 
 sudo cp ezymap ~/.local/bin/
+sudo cp ezymap /usr/bin/
 
 SHELL_NAME=$(basename "$SHELL")
 if [ "$SHELL_NAME" == "bash" ]; then
