@@ -1,5 +1,8 @@
 #!/bin/bash
-
+if [ "$EUID" -ne 0 ]; then
+  echo "This command can only be run as root."
+  exit 1
+fi
 echo "Installing..."
 echo "Updating package lists..."
 sudo apt-get update -qq > /dev/null 2>&1
