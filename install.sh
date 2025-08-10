@@ -13,8 +13,8 @@ sudo apt-get install -y curl > /dev/null 2>&1
 echo "Installing nmap..."
 sudo apt-get install -y nmap > /dev/null 2>&1
 
-echo "Installing torsocks..."
-sudo apt-get install -y torsocks > /dev/null 2>&1
+echo "Installing proxychains..."
+sudo apt-get install -y proxychains > /dev/null 2>&1
 
 sudo mkdir -p /usr/share/fonts
 [ ! -f /usr/share/fonts/starwars.flf ] && curl -o /tmp/starwars.flf https://raw.githubusercontent.com/xero/figlet-fonts/master/starwars.flf && sudo mv /tmp/starwars.flf /usr/share/fonts/

@@ -181,7 +181,7 @@ output_menu() {
 
 build_and_run() {
   cmd=()
-  $TOR_PROXY && cmd+=(torsocks)
+  $TOR_PROXY && cmd+=(proxychains)
   cmd+=(nmap)
   for s in "${SCAN_TYPES[@]}"; do cmd+=("${s%% *}"); done
   [[ -n ${VALUES[ports]} ]] && cmd+=("-p" "${VALUES[ports]}")
