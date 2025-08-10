@@ -13,9 +13,10 @@ sudo apt-get install -y nmap > /dev/null 2>&1
 echo "Installing torsocks..."
 sudo apt-get install -y torsocks > /dev/null 2>&1
 
-mkdir -p ~/.local/share/fonts
-[ ! -f ~/.local/share/fonts/starwars.flf ] && curl -o ~/.local/share/fonts/starwars.flf https://raw.githubusercontent.com/xero/figlet-fonts/master/starwars.flf
-[ ! -f ~/.local/share/fonts/Doom.flf ] && curl -o ~/.local/share/fonts/Doom.flf https://raw.githubusercontent.com/xero/figlet-fonts/master/Doom.flf
+sudo mkdir -p /usr/share/fonts
+[ ! -f /usr/share/fonts/starwars.flf ] && curl -o /tmp/starwars.flf https://raw.githubusercontent.com/xero/figlet-fonts/master/starwars.flf && sudo mv /tmp/starwars.flf /usr/share/fonts/
+[ ! -f /usr/share/fonts/Doom.flf ] && curl -o /tmp/Doom.flf https://raw.githubusercontent.com/xero/figlet-fonts/master/Doom.flf && sudo mv /tmp/Doom.flf /usr/share/fonts/
+
 
 for i in {1..5}; do
   echo -n "Loading"
