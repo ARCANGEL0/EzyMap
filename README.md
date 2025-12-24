@@ -1,7 +1,7 @@
 # EzyMap Scanner  
 ## 🔍 An Interactive Nmap Menu Script
 
-> 🧠 A terminal-based, fully interactive menu to build and run complex `nmap` scans with ease — no memorization required!
+> 🧠 A terminal-based, fully interactive menu to build and run complex `nmap` scans with ease, including nse scripts too.
 
 [![GitHub watchers](https://img.shields.io/github/watchers/ARCANGEL0/EzyMap.svg?style=flat-square&color=4c1)](https://github.com/ARCANGEL0/EzyMap/watchers)
 [![GitHub stars](https://img.shields.io/github/stars/ARCANGEL0/EzyMap.svg?style=flat-square&color=4c1)](https://github.com/ARCANGEL0/EzyMap/stargazers)
@@ -13,18 +13,18 @@
 
 ## 🜅 Features
 
-- 🎯 **Set multiple targets** — IPs, ranges, hostnames, CIDR  
-- 🔄 **Toggle multiple scan types** (`-sS`, `-sV`, `-O`, `-sn`, etc.)  
-- 🚀 **Control timing templates** from Paranoid to Insane (`-T0` to `-T5`)  
-- 🧩 **Flag toggles** for `-6`, `-n`, `-r`, `--reason`, and more  
-- 🎮 **Host discovery** flags: `PE`, `PP`, `PM`, `PS`, etc.  
-- 📜 **NSE scripting**:  
+- **Set multiple targets** — IPs, ranges, hostnames, CIDR  
+- **Toggle multiple scan types** (`-sS`, `-sV`, `-O`, `-sn`, etc.)  
+- **Control timing templates** from Paranoid to Insane (`-T0` to `-T5`)  
+- **Flag toggles** for `-6`, `-n`, `-r`, `--reason`, and more  
+- **Host discovery** flags: `PE`, `PP`, `PM`, `PS`, etc.  
+- **NSE scripting**:  
   - Select from all **installed scripts** (300+!)  
   - Add by **category**: `vuln`, `auth`, `fuzzer`, etc.  
   - Pass **custom arguments**  
-- 📁 **Output options**: Save as Normal, XML, Grepable, or all at once  
-- ✅ **Live preview of final `nmap` command**  
-- 🤓 **Friendly terminal UI** designed to speed up Nmap usage for all skill levels  
+- **Output options**: Save as Normal, XML, Grepable, or all at once  
+- **Live preview of final `nmap` command**  
+- **Friendly terminal UI** designed to speed up Nmap usage for all skill levels with easy methods
 
 ---
 
@@ -59,21 +59,73 @@ chmod +x install.sh
 
 ---
 
-## 🎯 NSE Power Mode
+### Scan Types
+Toggle and combine multiple scan modes:
+- SYN scan (`-sS`)
+- Service detection (`-sV`)
+- OS detection (`-O`)
+- Ping scan (`-sn`)
+- TCP connect (`-sT`)
+- UDP scan (`-sU`)
+- Aggressive scan (`-A`)
+- Custom combinations
 
-🧠 Advanced NSE Mode gives you full control.
+### Port Selection
+- TCP and UDP ports
+- Ranges and lists
+- Combined syntax:
+  - `T:1-100,U:53,67,123`
 
-- Select from **all installed NSE scripts**
-- Searchable categories like `vuln`, `auth`, `malware`, `exploit`, etc.
-- Combine multiple scripts and pass arguments like `http.useragent="Firefox"`
+### Timing & Performance
+- Full control over timing templates:
+  - `-T0` (Paranoid)
+  - `-T1` (Sneaky)
+  - `-T2` (Polite)
+  - `-T3` (Normal)
+  - `-T4` (Aggressive)
+  - `-T5` (Insane)
 
+### Host Discovery
+Enable or disable discovery methods:
+- ICMP echo, timestamp, netmask
+- TCP SYN / ACK ping
+- UDP ping
+- ARP discovery (LAN)
+
+### Flag Toggles
+Quick enable/disable for:
+- IPv6 (`-6`)
+- No DNS resolution (`-n`)
+- Sequential port scan (`-r`)
+- Show scan reasons (`--reason`)
+- Disable host discovery (`-Pn`)
+- Verbosity and debug levels
+
+---
+
+## NSE Scripting (Core Feature)
+
+EzyMap provides full access to **installed NSE scripts**, by actively searching in default nmap directory.
+
+### Script Selection
+- List and select from all local NSE scripts (300+ depending on install)
+- Filter by category:
+  - `vuln`
+  - `auth`
+  - `discovery`
+  - `exploit`
+  - `malware`
+  - `fuzzer`
+  - `default`
+  - `safe`
+- Combine multiple scripts in one scan
 ---
 
 ## 💡 Tips
 
-- Scan faster? Use `-T4` or `-T5` for aggressive speed.
-- Want stealth? Stick with `-sS` and `-T0`/`-T1`.
-- Scan IPv6? Toggle `-6` and provide a valid IPv6 target.
+- Use `-T4` or `-T5` for aggressive speed.
+- Use with `-sS` and `-T0`/`-T1` for a stealthier approach.
+- Toggle `-6` to provide a valid IPv6 target.
 
 ---
 
@@ -86,13 +138,13 @@ chmod +x install.sh
 
 ---
 
-
+<div align=center">
 ## ❤️ Support
 
 <a href='https://ko-fi.com/J3J7WTYV7' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://storage.ko-fi.com/cdn/kofi3.png?v=6' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
 <br>
 <strong>Hack the world. Byte by Byte.</strong> ⛛
 </p>
-
+</div>
 > “Because remembering 20 Nmap options is a crime. Make hacking fun again.”  
 > – Me
