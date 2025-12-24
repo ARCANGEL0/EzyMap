@@ -138,6 +138,8 @@ EzyMap provides full access to **installed NSE scripts**, by actively searching 
 
 ---
 
+<div align="center">
+
 ## ❤️ Support
 
 [![Star on GitHub](https://img.shields.io/github/stars/ARCANGEL0/EzyMap?style=social)](https://github.com/ARCANGEL0/EVA)
