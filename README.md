@@ -138,13 +138,21 @@ EzyMap provides full access to **installed NSE scripts**, by actively searching 
 
 ---
 
-<div align=center">
 ## ❤️ Support
+
+[![Star on GitHub](https://img.shields.io/github/stars/ARCANGEL0/EzyMap?style=social)](https://github.com/ARCANGEL0/EVA)
+[![Follow on GitHub](https://img.shields.io/github/followers/ARCANGEL0?style=social)](https://github.com/ARCANGEL0)
+<br>
 
 <a href='https://ko-fi.com/J3J7WTYV7' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://storage.ko-fi.com/cdn/kofi3.png?v=6' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
 <br>
-<strong>Hack the world. Byte by Byte.</strong> ⛛
-</p>
+<strong>Hack the world. Byte by Byte.</strong> ⛛ <br>
+𝝺𝗿𝗰𝗮𝗻𝗴𝗲𝗹𝗼 @ 2025
+
+**[[ꋧ]](#ezymap-scanner)**
+
 </div>
-> “Because remembering 20 Nmap options is a crime. Make hacking fun again.”  
-> – Me
+ 
+---
+
+*⚠️ Remember: With great power comes great responsibility. Use this tool ethically and legally.*
